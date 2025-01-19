@@ -75,7 +75,7 @@ cd js-ts-py-go-rs-zero-to-interview-ready
 
 ## Contributions & Feedback ❤️
 
-We love collaboration! If you have ideas, improvements, or feedback, feel free to:
+I love collaboration! If you have ideas, improvements, or feedback, feel free to:
 
 - Open an issue.
 - Submit a pull request.
