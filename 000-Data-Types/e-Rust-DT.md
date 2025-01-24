@@ -1,0 +1,41 @@
+# 1. Signed Integers
+
+| **Type Name** | **Type**       | **Bits**                                                 | **Byte**     | **Range**                                                                                                   | **Use Cases**                                                          | **Pitfalls**                                                         |
+| ------------- | -------------- | -------------------------------------------------------- | ------------ | ----------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| i8            | Signed integer | 8 bits                                                   | 1 byte       | −128 to 127                                                                                                 | Very small signed values in tight memory contexts; low-level protocols | Easily overflows; limited range                                      |
+| i16           | Signed integer | 16 bits                                                  | 2 bytes      | −32,768 to 32,767                                                                                           | Embedded systems, data formats that specify 16-bit fields              | Same overflow issues; range might be too small for some calculations |
+| i32           | Signed integer | 32 bits                                                  | 4 bytes      | −2,147,483,648 to 2,147,483,647                                                                             | Default choice for integers on many platforms; typical counters        | Can overflow; might still be too small for large values              |
+| i64           | Signed integer | 64 bits                                                  | 8 bytes      | −9,223,372,036,854,775,808 to 9,223,372,036,854,775,807                                                     | Large integer calculations, file sizes, timestamps                     | Larger memory footprint; overflow possible                           |
+| i128          | Signed integer | 128 bits                                                 | 16 bytes     | −170,141,183,460,469,231,731,687,303,715,884,105,728 to 170,141,183,460,469,231,731,687,303,715,884,105,727 | Specialized big-integer uses (e.g., cryptography)                      | Slower performance than smaller integers; large memory usage         |
+| isize         | Signed integer | Depends on target (32 bits on 32-bit, 64 bits on 64-bit) | 4 or 8 bytes | −2³¹ to 2³¹−1 on 32-bit, −2⁶³ to 2⁶³−1 on 64-bit                                                            | Pointer-related arithmetic, indexing collections                       | Size varies by platform (potential portability issues)               |
+
+---
+
+# 2. Unsigned Integers
+
+| **Type Name** | **Type**         | **Bits**                                                 | **Byte**     | **Range**                                                | **Use Cases**                                                                    | **Pitfalls**                                                                |
+| ------------- | ---------------- | -------------------------------------------------------- | ------------ | -------------------------------------------------------- | -------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| u8            | Unsigned integer | 8 bits                                                   | 1 byte       | 0 to 255                                                 | Handling raw bytes, color components (0-255), low-level protocols                | Wrap-around on overflow (in release mode); cannot represent negative values |
+| u16           | Unsigned integer | 16 bits                                                  | 2 bytes      | 0 to 65,535                                              | Handling slightly larger ranges than `u8` in embedded systems, protocols         | Same overflow concerns; limited domain of non-negative values               |
+| u32           | Unsigned integer | 32 bits                                                  | 4 bytes      | 0 to 4,294,967,295                                       | Default unsigned integer for many use cases, large ranges of non-negative values | Overflow wraps (in release mode); can’t handle negative numbers             |
+| u64           | Unsigned integer | 64 bits                                                  | 8 bytes      | 0 to 18,446,744,073,709,551,615                          | Large ranges (e.g., file sizes, memory offsets in 64-bit systems)                | Larger memory usage; overflow possible                                      |
+| u128          | Unsigned integer | 128 bits                                                 | 16 bytes     | 0 to 340,282,366,920,938,463,463,374,607,431,768,211,455 | Specialized applications (cryptography, big counters)                            | Even larger memory overhead; operations can be slower                       |
+| usize         | Unsigned integer | Depends on target (32 bits on 32-bit, 64 bits on 64-bit) | 4 or 8 bytes | 0 to 2³²−1 on 32-bit, 0 to 2⁶⁴−1 on 64-bit               | Collection indices, sizes in memory allocation routines                          | Platform-dependent size can cause portability issues                        |
+
+---
+
+# 3. Floating-Point
+
+| **Type Name** | **Type**                                   | **Bits** | **Byte** | **Range**                      | **Use Cases**                                              | **Pitfalls**                                                                                                                   |
+| ------------- | ------------------------------------------ | -------: | -------: | ------------------------------ | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| f32           | Floating-point (IEEE 754 single-precision) |       32 |        4 | ~±1.2 × 10⁻³⁸ to ±3.4 × 10³⁸   | Real-time graphics, games, scenarios needing less memory   | Limited precision (~7 decimal digits), rounding errors, overflow/underflow possible                                            |
+| f64           | Floating-point (IEEE 754 double-precision) |       64 |        8 | ~±2.2 × 10⁻³⁰⁸ to ±1.8 × 10³⁰⁸ | Default float; scientific computations, financial modeling | Larger memory usage (~15 decimal digits of precision), still subject to floating-point rounding errors; not exact decimal math |
+
+---
+
+# 4. Other
+
+| **Type Name** | **Type**             | **Bits**             | **Byte**             | **Range**                                                                  | **Use Cases**                           | **Pitfalls**                                                                                                               |
+| ------------- | -------------------- | -------------------- | -------------------- | -------------------------------------------------------------------------- | --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| bool          | Boolean              | 1 bit (conceptually) | 1 byte (practically) | true or false                                                              | Conditional logic, flags                | Not guaranteed to occupy just 1 bit; storing many bools in an array can waste space                                        |
+| char          | Unicode scalar value | 32 bits (UTF-32)     | 4 bytes              | Valid Unicode scalar values from U+0000 to U+10FFFF (excluding surrogates) | Handling/manipulating single characters | `char` is more than 1 byte (4 bytes in Rust), does not always represent a user-visible “character” (combining marks, etc.) |
