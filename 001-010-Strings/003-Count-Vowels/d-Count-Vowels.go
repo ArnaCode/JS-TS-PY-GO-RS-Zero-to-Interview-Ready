@@ -11,6 +11,7 @@ func CountVowels(str string) int {
 			count++
 		}
 	}
+
 	return count
 }
 
